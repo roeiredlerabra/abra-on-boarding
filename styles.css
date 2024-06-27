@@ -1,0 +1,89 @@
+.process-step-wrapper {
+    overflow-x: auto;
+    padding: 20px 0;
+    height: 100px;
+}
+
+.process-step-container {
+    display: flex;
+    min-width: max-content;
+    position: relative;
+}
+
+.process-step {
+    position: relative;
+    padding: 0 30px;
+    min-width: 240px;
+    flex: 1;
+}
+
+.process-step::before {
+    content: attr(data-title);
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.process-step::after {
+    content: attr(data-step);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.process-step.completed::after {
+    content: '\2713'; /* Unicode checkmark */
+    background-color: #28a745;
+    color: #fff;
+}
+
+.process-step.current::after {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.process-step.upcoming::after {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.process-step .progress {
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    top: 13px;
+    left: 0;
+    background-color: #e9ecef;
+}
+
+.process-step .progress-bar {
+    transition: width 0.6s ease;
+}
+
+.process-step:first-child .progress {
+    left: 50%;
+    width: 50%;
+}
+
+.process-step:last-child .progress {
+    width: 50%;
+}
+
+.process-step:not(:first-child) .progress {
+    left: 0;
+}
