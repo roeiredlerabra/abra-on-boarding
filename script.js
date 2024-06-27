@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
+    
 
     function populateProgressBar(sortedData) {
         progressBar.innerHTML = '';
@@ -171,4 +172,5 @@ document.addEventListener('DOMContentLoaded', function() {
             updateDetails(firstPendingStep);
         }
     }
+
 });

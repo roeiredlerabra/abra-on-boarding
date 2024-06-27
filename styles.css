@@ -2,8 +2,26 @@
     overflow-x: auto;
     padding: 20px 0;
     height: 100px;
+    scrollbar-width: thin;
+    scrollbar-color: #6c6c6c #f1f1f1;
 }
-
+.process-step-wrapper::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .process-step-wrapper::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }
+  
+  .process-step-wrapper::-webkit-scrollbar-thumb {
+    background-color: #6c6c6c;
+    border-radius: 50%;
+    border: 3px solid #f1f1f1;
+  }
+  
+  .process-step-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #4c4c4c;
+  }
 .process-step-container {
     display: flex;
     min-width: max-content;
@@ -86,4 +104,33 @@
 
 .process-step:not(:first-child) .progress {
     left: 0;
+}
+header {
+    background-color: #121f3f;
+    color: white;
+    padding: 10px 0;
+}
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-brand img {
+    /*border-radius: 50%;*/
+    width: auto;
+    height: 25px;
+}
+footer {
+    background-color: #121f3f;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+}
+.container {
+    margin-top: 60px;
+    margin-bottom: 60px;
 }
