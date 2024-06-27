@@ -45,6 +45,7 @@
     font-weight: bold;
     color: #6c757d;
     white-space: nowrap;
+    direction: rtl;
 }
 
 .process-step::after {
