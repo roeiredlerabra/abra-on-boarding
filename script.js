@@ -101,14 +101,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateDetails(item) {
         const responsible = item.StageResponsible1[0] ? item.StageResponsible1[0].DisplayName : 'Not assigned';
+        
+        // Check if field_18 contains data
+        let formattedField18 = '';
+        if (item.field_18) {
+            // Format the field_18 content and add RTL styling
+            formattedField18 = formatField18(item.field_18);
+        }
+    
         details.innerHTML = `
             <div class="card-body">
                 <h3 class="card-title">Current Stage: ${item.field_3}</h3>
                 <p class="card-text">Responsible: ${responsible}</p>
                 <p class="card-text">Status: ${item.field_5.Value}</p>
-                <p class="card-text">Info: ${item.field_18}</p>
+                <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
             </div>
         `;
+    }
+    
+    function formatField18(content) {
+        // Split the content into paragraphs
+        const paragraphs = content.split('\n');
+        
+        // Initialize variables to track if we are inside a list
+        let insideList = false;
+        let formattedContent = '';
+        
+        // Process each paragraph
+        paragraphs.forEach(paragraph => {
+            paragraph = paragraph.trim();
+            if (paragraph === '') return; // Skip empty paragraphs
+            
+            if (paragraph.startsWith('•')) {
+                // This is a bullet point
+                if (!insideList) {
+                    formattedContent += '<ul>';
+                    insideList = true;
+                }
+                formattedContent += `<li>${paragraph.substring(1).trim()}</li>`;
+            } else {
+                if (insideList) {
+                    formattedContent += '</ul>';
+                    insideList = false;
+                }
+                if (paragraph.endsWith(':')) {
+                    // This is likely a header
+                    formattedContent += `<h4>${paragraph}</h4>`;
+                } else {
+                    // Regular paragraph
+                    formattedContent += `<p>${paragraph}</p>`;
+                }
+            }
+        });
+        
+        // Close any open list
+        if (insideList) {
+            formattedContent += '</ul>';
+        }
+    
+        // Replace URL placeholders with actual links
+        formattedContent = formattedContent.replace(/\[URL\](.*?)\[\/URL\]/g, '<a href="#">$1</a>');
+    
+        return formattedContent;
     }
 
     function updateDetailsForFirstPendingStep(sortedData) {
