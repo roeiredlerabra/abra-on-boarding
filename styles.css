@@ -150,3 +150,7 @@ body, html {
     /* Example styles for content */
     padding: 20px;
 }
+.project {
+    font-weight: bold;
+    color: #080670;
+  }

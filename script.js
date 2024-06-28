@@ -47,16 +47,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function populateEmployeeCard(employeeInfo) {
+        const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16 } = employeeInfo;
+    
         employeeCard.innerHTML = `
             <div class="card-body">
-                <h2 class="card-title">${employeeInfo.Title}</h2>
-                <p class="card-text">${employeeInfo.field_13} (${employeeInfo.field_14})</p>
-                <p class="card-text">Department: ${employeeInfo.field_12}</p>
-                <p class="card-text">Email: ${employeeInfo.field_10}</p>
-                <p class="card-text">Phone: ${employeeInfo.field_8}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="card-title">${Title}</h2>
+                        <p class="card-text">${field_13} (${field_14})</p>
+                        <p class="card-text">Department: ${field_12}</p>
+                        <p class="card-text">Personal Email: ${field_9}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text">Email: ${field_10}</p>
+                        <p class="card-text">Phone: ${field_8}</p>
+                        <p class="card-text">Address: ${field_11}</p>
+                        <p class="card-text project">Main Project: ${field_16}</p>
+                    </div>
+                </div>
             </div>
         `;
     }
+    
     
 
     function populateProgressBar(sortedData) {
