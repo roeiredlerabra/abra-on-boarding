@@ -55,18 +55,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <h2 class="card-title">${Title}</h2>
                         <p class="card-text">${field_13} (${field_14})</p>
-                        <p class="card-text">Department: ${field_12}</p>
-                        <p class="card-text">Start Date: ${Date}</p>
-                        <p class="card-text">Email: ${field_10}</p>
+                        <p class="card-text">מחקלה: ${field_12}</p>
+                        <p class="card-text">תאריך התחלה: ${Date}</p>
+                        <p class="card-text">אימייל ארגוני: ${field_10}</p>
 
                     </div>
                     <div class="col-md-6">
 
-                        <p class="card-text">Personal Email: ${field_9}</p>
+                        <p class="card-text">אימייל אישי: ${field_9}</p>
 
-                        <p class="card-text">Phone: ${field_8}</p>
-                        <p class="card-text">Address: ${field_11}</p>
-                        <p class="card-text project">Main Project: ${field_16}</p>
+                        <p class="card-text">טלפון נייד: ${field_8}</p>
+                        <p class="card-text">כתובת: ${field_11}</p>
+                        <p class="card-text project">פרוייקט ראשי: ${field_16}</p>
                     </div>
                 </div>
             </div>
