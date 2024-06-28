@@ -135,3 +135,18 @@ footer {
     margin-top: 60px;
     margin-bottom: 60px;
 }
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.content {
+    flex: 1; /* Take up remaining vertical space */
+    /* Example styles for content */
+    padding: 20px;
+}
