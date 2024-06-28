@@ -154,3 +154,6 @@ body, html {
     font-weight: bold;
     color: #080670;
   }
+  .card{
+    direction: rtl;
+  }

@@ -134,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
         details.innerHTML = `
             <div class="card-body">
-                <h3 class="card-title">Current Stage: ${item.field_3}</h3>
-                <p class="card-text">Responsible: ${responsible}</p>
-                <p class="card-text">Status: ${item.field_5.Value}</p>
-                <p class="card-text">Date: ${item.Date || ""}</p>
+                <h3 class="card-title">שלב : ${item.field_3}</h3>
+                <p class="card-text">אחראי: ${responsible}</p>
+                <p class="card-text">סטטוס: ${item.field_5.Value}</p>
+                <p class="card-text">תאריך: ${item.Date || ""}</p>
                 <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
                 <ul>${linkItems}</ul>
             </div>
