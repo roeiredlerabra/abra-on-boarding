@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function populateEmployeeCard(employeeInfo) {
-        const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16 } = employeeInfo;
+        const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16, Date } = employeeInfo;
     
         employeeCard.innerHTML = `
             <div class="card-body">
@@ -56,10 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         <h2 class="card-title">${Title}</h2>
                         <p class="card-text">${field_13} (${field_14})</p>
                         <p class="card-text">Department: ${field_12}</p>
-                        <p class="card-text">Personal Email: ${field_9}</p>
+                        <p class="card-text">Start Date: ${Date}</p>
+                        <p class="card-text">Email: ${field_10}</p>
+
                     </div>
                     <div class="col-md-6">
-                        <p class="card-text">Email: ${field_10}</p>
+
+                        <p class="card-text">Personal Email: ${field_9}</p>
+
                         <p class="card-text">Phone: ${field_8}</p>
                         <p class="card-text">Address: ${field_11}</p>
                         <p class="card-text project">Main Project: ${field_16}</p>
