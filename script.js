@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h3 class="card-title">Current Stage: ${item.field_3}</h3>
                 <p class="card-text">Responsible: ${responsible}</p>
                 <p class="card-text">Status: ${item.field_5.Value}</p>
+                <p class="card-text">Date: ${item.Date||""}</p>
                 <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
             </div>
         `;
