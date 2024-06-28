@@ -159,3 +159,6 @@ body, html {
   .card{
     direction: rtl;
   }
+  .is-invalid {
+    border-color: #dc3545;
+}
