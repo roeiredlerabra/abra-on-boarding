@@ -74,11 +74,13 @@
 .process-step.current::after {
     background-color: #ff7300;
     color: #fff;
+    content: '⌖';
 }
 
 .process-step.upcoming::after {
     background-color: #dc3545;
     color: #fff;
+    content: '⃠ ';
 }
 
 .process-step .progress {
