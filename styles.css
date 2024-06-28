@@ -72,7 +72,7 @@
 }
 
 .process-step.current::after {
-    background-color: #007bff;
+    background-color: #ff7300;
     color: #fff;
 }
 
