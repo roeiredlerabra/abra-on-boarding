@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateDetails(item) {
         const responsible = item.StageResponsible1[0] ? item.StageResponsible1[0].DisplayName : 'Not assigned';
-        
+    
         // Check if field_18 contains data
         let formattedField18 = '';
         if (item.field_18) {
@@ -126,16 +126,24 @@ document.addEventListener('DOMContentLoaded', function() {
             formattedField18 = formatField18(item.field_18);
         }
     
+        // Split field_19 into individual links if it contains multiple URLs
+        const links = item.field_19 ? item.field_19.split(',') : [];
+    
+        // Create list items for each link
+        const linkItems = links.map(link => `<li><a href="${link.trim()}">${link.trim()}</a></li>`).join('');
+    
         details.innerHTML = `
             <div class="card-body">
                 <h3 class="card-title">Current Stage: ${item.field_3}</h3>
                 <p class="card-text">Responsible: ${responsible}</p>
                 <p class="card-text">Status: ${item.field_5.Value}</p>
-                <p class="card-text">Date: ${item.Date||""}</p>
+                <p class="card-text">Date: ${item.Date || ""}</p>
                 <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
+                <ul>${linkItems}</ul>
             </div>
         `;
     }
+    
     
     function formatField18(content) {
         // Split the content into paragraphs
@@ -179,9 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         // Replace URL placeholders with actual links
         formattedContent = formattedContent.replace(/\[URL\](.*?)\[\/URL\]/g, '<a href="#">$1</a>');
+        formattedContent = formattedContent.replace(/\[https?:\/\/[^\]]+\](.*?)\[\/URL\]/g, '<a href="#">$1</a>');
     
         return formattedContent;
     }
+    
 
     function updateDetailsForFirstPendingStep(sortedData) {
         const firstPendingStep = sortedData.find(item => item.field_5.Value === 'ממתין לביצוע');
