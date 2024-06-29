@@ -9,38 +9,36 @@ document.addEventListener('DOMContentLoaded', function() {
     alertDiv.style.display = 'none';
     form.prepend(alertDiv);
 
+    // Create a container for the success message and new employee button
+    const successContainer = document.createElement('div');
+    successContainer.style.display = 'none';
+    form.parentNode.insertBefore(successContainer, form.nextSibling);
+
+    // Create a loading spinner
+    const spinner = document.createElement('div');
+    spinner.classList.add('spinner-border', 'text-primary');
+    spinner.setAttribute('role', 'status');
+    spinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
+    spinner.style.display = 'none';
+    form.appendChild(spinner);
+
     // Arrays of required fields for each step
     const requiredFieldsStep1 = ['employeeFirstName', 'employeeLastName', 'employeeEmail', 'employeePhone'];
-    const requiredFieldsStep2 = ['employeeAddress', 'employeePosition', 'employeeDepartment', 'startDate'];
+    const requiredFieldsStep2 = ['employeePosition', 'employeeDepartment', 'startDate'];
 
     function getFieldLabel(fieldId) {
         const labelElement = document.querySelector(`label[for="${fieldId}"]`);
         return labelElement ? labelElement.textContent : fieldId;
     }
 
-    function validateStep(fields) {
-        let isValid = true;
-        let emptyFields = [];
-
-        fields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field.value.trim() === '') {
-                field.classList.add('is-invalid');
-                isValid = false;
-                emptyFields.push(getFieldLabel(fieldId));
-            } else {
-                field.classList.remove('is-invalid');
-            }
-        });
-
-        if (!isValid) {
-            alertDiv.innerHTML = `נא למלא את השדות הבאים: ${emptyFields.join(', ')}`;
-            alertDiv.style.display = 'block';
+    function validateField(field, errorMessage) {
+        if (field.value.trim() === '') {
+            field.classList.add('is-invalid');
+            return errorMessage;
         } else {
-            alertDiv.style.display = 'none';
+            field.classList.remove('is-invalid');
+            return '';
         }
-
-        return isValid;
     }
 
     function validateIsraeliPhoneNumber(phone) {
@@ -54,89 +52,162 @@ document.addEventListener('DOMContentLoaded', function() {
         return regex.test(email);
     }
 
+    function showAlerts(errorMessages) {
+        alertDiv.innerHTML = errorMessages.join('<br>');
+        alertDiv.style.display = 'block';
+    }
+
+    function hideAlerts() {
+        alertDiv.style.display = 'none';
+    }
+
+    function validateStep(fields) {
+        let errorMessages = [];
+        fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            const label = getFieldLabel(fieldId);
+            const error = validateField(field, `נא למלא את השדה ${label}`);
+            if (error) {
+                errorMessages.push(error);
+            }
+        });
+        return errorMessages;
+    }
+
+    function updateButtonState(button, fields) {
+        const isValid = fields.every(fieldId => document.getElementById(fieldId).value.trim() !== '');
+        button.disabled = !isValid;
+    }
+
+    // Add input event listeners to Step 1 fields
+    requiredFieldsStep1.forEach(fieldId => {
+        document.getElementById(fieldId).addEventListener('input', () => updateButtonState(nextButton, requiredFieldsStep1));
+    });
+
+    // Add input event listeners to Step 2 fields
+    requiredFieldsStep2.forEach(fieldId => {
+        document.getElementById(fieldId).addEventListener('input', () => updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2));
+    });
+
     nextButton.addEventListener('click', function() {
-        if (validateStep(requiredFieldsStep1)) {
-            const phoneField = document.getElementById('employeePhone');
-            const emailField = document.getElementById('employeeEmail');
-            let isValid = true;
+        let errorMessages = validateStep(requiredFieldsStep1);
 
-            if (!validateIsraeliPhoneNumber(phoneField.value)) {
-                phoneField.classList.add('is-invalid');
-                alertDiv.innerHTML = 'נא להזין מספר טלפון ישראלי תקין';
-                isValid = false;
-            } else {
-                phoneField.classList.remove('is-invalid');
-            }
+        // Validate phone number
+        const phoneField = document.getElementById('employeePhone');
+        if (phoneField.value.trim() !== '' && !validateIsraeliPhoneNumber(phoneField.value)) {
+            phoneField.classList.add('is-invalid');
+            errorMessages.push('נא להזין מספר טלפון ישראלי תקין');
+        }
 
-            if (!validateEmail(emailField.value)) {
-                emailField.classList.add('is-invalid');
-                alertDiv.innerHTML = alertDiv.innerHTML ? 
-                    alertDiv.innerHTML + '<br>נא להזין כתובת אימייל תקינה' : 
-                    'נא להזין כתובת אימייל תקינה';
-                isValid = false;
-            } else {
-                emailField.classList.remove('is-invalid');
-            }
+        // Validate email
+        const emailField = document.getElementById('employeeEmail');
+        if (emailField.value.trim() !== '' && !validateEmail(emailField.value)) {
+            emailField.classList.add('is-invalid');
+            errorMessages.push('נא להזין כתובת אימייל תקינה');
+        }
 
-            if (isValid) {
-                alertDiv.style.display = 'none';
-                step1.style.display = 'none';
-                step2.style.display = 'block';
-            } else {
-                alertDiv.style.display = 'block';
-            }
+        if (errorMessages.length === 0) {
+            hideAlerts();
+            step1.style.display = 'none';
+            step2.style.display = 'block';
+        } else {
+            showAlerts(errorMessages);
         }
     });
 
     prevButton.addEventListener('click', function() {
         step2.style.display = 'none';
         step1.style.display = 'block';
+        hideAlerts();
     });
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        if (validateStep(requiredFieldsStep2)) {
-            // Collect all form data
-            const formData = new FormData(form);
-            const jsonData = {};
-            
-            for (let [key, value] of formData.entries()) {
-                jsonData[key] = value;
-            }
-    
-            console.log('Sending data:', jsonData);
-    
-            // Send POST request
-            fetch('https://prod-119.westeurope.logic.azure.com:443/workflows/b042d076357746619aee30126e5619f3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RWuE9nuxxQj8NLeGNIKFiTfvk9oI80OPOVB0_jAvMOM', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(jsonData),
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (response.status === 200) {
-                    return { success: true };
-                } else {
-                    throw new Error('Network response was not ok');
-                }
-            })
-            .then(data => {
-                console.log('Success:', data);
-                alertDiv.innerHTML = 'Form submitted successfully!';
-                alertDiv.classList.remove('alert-danger');
-                alertDiv.classList.add('alert-success');
-                alertDiv.style.display = 'block';
-                form.reset();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alertDiv.innerHTML = 'An error occurred while submitting the form. Please try again.';
-                alertDiv.classList.remove('alert-success');
-                alertDiv.classList.add('alert-danger');
-                alertDiv.style.display = 'block';
-            });
+        let errorMessages = validateStep(requiredFieldsStep2);
+
+        if (errorMessages.length === 0) {
+            hideAlerts();
+            submitForm();
+        } else {
+            showAlerts(errorMessages);
         }
     });
+
+    function submitForm() {
+        // Show loading spinner
+        spinner.style.display = 'block';
+        
+        // Disable submit button
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        // Collect all form data
+        const formData = new FormData(form);
+        const jsonData = {};
+        
+        for (let [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+
+        console.log('Sending data:', jsonData);
+
+        // Send POST request
+        fetch('https://prod-119.westeurope.logic.azure.com:443/workflows/b042d076357746619aee30126e5619f3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RWuE9nuxxQj8NLeGNIKFiTfvk9oI80OPOVB0_jAvMOM', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData),
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .then(data => {
+            console.log('Success:', data);
+            // Hide the form
+            form.style.display = 'none';
+
+            // Show success message and new employee button
+            successContainer.innerHTML = `
+                <div class="alert alert-success">
+                    פתוח לעובד תהליך קליטה חדש באתר: 
+                    <a href="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" target="_blank">
+                        https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}
+                    </a>
+                </div>
+                <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
+            `;
+            successContainer.style.display = 'block';
+
+            // Add event listener for the new employee button
+            document.getElementById('newEmployeeBtn').addEventListener('click', function() {
+                successContainer.style.display = 'none';
+                form.style.display = 'block';
+                form.reset();
+                step2.style.display = 'none';
+                step1.style.display = 'block';
+                hideAlerts();
+                updateButtonState(nextButton, requiredFieldsStep1);
+                updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            showAlerts(['An error occurred while submitting the form. Please try again.']);
+        })
+        .finally(() => {
+            // Hide loading spinner and re-enable submit button
+            spinner.style.display = 'none';
+            submitButton.disabled = false;
+        });
+    }
+
+    // Initialize button states
+    updateButtonState(nextButton, requiredFieldsStep1);
+    updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
 });
