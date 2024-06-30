@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="col-md-6">
                         <h2 class="card-title">${Title}</h2>
                         <p class="card-text">${field_13} (${field_14})</p>
-                        <p class="card-text">מחקלה: ${field_12}</p>
+                        <p class="card-text">מחלקה: ${field_12}</p>
                         <p class="card-text">תאריך התחלה: ${Date}</p>
                         <p class="card-text">אימייל ארגוני: ${field_10}</p>
 
