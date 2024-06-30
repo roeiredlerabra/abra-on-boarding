@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.status === 200) {
                 // Login successful
                 loginForm.style.display = 'none';
-                mainContent.style.display = 'block';
+                mainContent.style.display = 'flex';
             } else {
                 // Login failed
                 throw new Error('Login failed');
