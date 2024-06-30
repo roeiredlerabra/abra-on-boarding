@@ -176,3 +176,7 @@ body, html {
 @keyframes spinner-border {
     to { transform: rotate(360deg); }
 }
+#loginFormElement {
+    position: relative;
+}
+

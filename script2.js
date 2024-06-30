@@ -8,7 +8,59 @@ document.addEventListener('DOMContentLoaded', function() {
     alertDiv.classList.add('alert', 'alert-danger');
     alertDiv.style.display = 'none';
     form.prepend(alertDiv);
+    const loginForm = document.getElementById('loginForm');
+    const mainContent = document.querySelector('.wrapper');
+    const loginFormElement = document.getElementById('loginFormElement');
 
+    // Hide main content initially
+    mainContent.style.display = 'none';
+
+    // Create login spinner element
+    const loginSpinner = document.createElement('div');
+    loginSpinner.classList.add('spinner-border', 'text-primary');
+    loginSpinner.setAttribute('role', 'status');
+    loginSpinner.innerHTML = '<span class="visually-hidden">Loading...</span>';
+    loginSpinner.style.display = 'none';
+    loginFormElement.appendChild(loginSpinner);
+
+    loginFormElement.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const submitButton = loginFormElement.querySelector('button[type="submit"]');
+
+        // Show login spinner and disable submit button
+        loginSpinner.style.display = 'inline-block';
+        submitButton.disabled = true;
+
+        // Send login request to API
+        fetch('https://prod-86.westeurope.logic.azure.com:443/workflows/11388c56c87e4424b86ad3abcbf012d1/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=pvYxnmvPdxf74xX5gQHebOf_kwT3zyTkQDkwGxIHfX8', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
+        .then(response => {
+            if (response.status === 200) {
+                // Login successful
+                loginForm.style.display = 'none';
+                mainContent.style.display = 'block';
+            } else {
+                // Login failed
+                throw new Error('Login failed');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Login failed. Please try again.');
+        })
+        .finally(() => {
+            // Hide login spinner and re-enable submit button
+            loginSpinner.style.display = 'none';
+            submitButton.disabled = false;
+        });
+    });
     // Create a container for the success message and new employee button
     const successContainer = document.createElement('div');
     successContainer.style.display = 'none';
