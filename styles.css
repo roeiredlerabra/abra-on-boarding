@@ -71,11 +71,27 @@
     color: #fff;
 }
 
-.process-step.current::after {
-    background-color: #ff7300;
-    color: #fff;
-    content: '⌖';
-}
+@keyframes breatheAndGlow {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+      box-shadow: 0 0 0 rgba(163, 10, 2, 0.991);
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+      box-shadow: 0 0 15px rgba(163, 10, 2, 0.991);
+    }
+  }
+  
+  .process-step.current::after {
+      background-color: #ff7300;
+      color: #fff;
+      content: '⌖';
+      animation: breatheAndGlow 2s ease-in-out infinite;
+      display: inline-block;
+      border-radius: 50%; /* Ensures the glow follows a circular shape */
+  }
 
 .process-step.upcoming::after {
     background-color: #dc3545;
