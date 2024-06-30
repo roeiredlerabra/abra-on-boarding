@@ -117,7 +117,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateDetails(item) {
-        const responsible = item.StageResponsible1[0] ? item.StageResponsible1[0].DisplayName : 'Not assigned';
+        // Handle multiple responsible people
+        const responsiblesHtml = item.StageResponsible1 && item.StageResponsible1.length > 0
+            ? item.StageResponsible1.map(person => `
+                <div class="responsible-user">
+                    <img src="img/Untitled design (24).png" alt="${person.DisplayName}" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name">${person.DisplayName}</div>
+                        <div class="user-email">${person.Email}</div>
+                    </div>
+                </div>
+            `).join('')
+            : '<div class="no-responsible">Not assigned</div>';
     
         // Check if field_18 contains data
         let formattedField18 = '';
@@ -135,7 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
         details.innerHTML = `
             <div class="card-body">
                 <h3 class="card-title">שלב : ${item.field_3}</h3>
-                <p class="card-text">אחראי: ${responsible}</p>
+                <div class="responsibles">
+                    <p>אחראי:</p>
+                    ${responsiblesHtml}
+                </div>
                 <p class="card-text">סטטוס: ${item.field_5.Value}</p>
                 <p class="card-text">תאריך: ${item.Date || ""}</p>
                 <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
