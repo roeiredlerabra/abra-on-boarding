@@ -231,3 +231,13 @@ body, html {
     font-style: italic;
     color: #999;
 }
+.navbar-nav .dropdown-menu {
+    position: static;
+    /* direction: rtl; */
+    text-align: right;
+}
+@media (min-width: 992px) {
+    .modal-xl {
+      max-width: 70%;
+    }
+  }

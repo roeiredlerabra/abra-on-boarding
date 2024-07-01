@@ -5,6 +5,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const employeeCard = document.getElementById('employeeCard');
     const progressBar = document.getElementById('progressBar');
     const details = document.getElementById('details');
+    const pdfLinks = document.querySelectorAll('.pdf-link');
+    const pdfFrame = document.getElementById('pdfFrame');
+    const pdfModal = new bootstrap.Modal(document.getElementById('pdfModal'));
+
+        // Add the new PDF handling code here
+        pdfLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pdfUrl = this.getAttribute('href');
+                pdfFrame.src = pdfUrl;
+                pdfModal.show();
+            });
+        });
+    
+        // Adjust iframe height when modal is shown
+        document.getElementById('pdfModal').addEventListener('shown.bs.modal', function () {
+            const modalBody = this.querySelector('.modal-body');
+            pdfFrame.style.height = modalBody.offsetHeight + 'px';
+        });
 
     function getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
