@@ -236,8 +236,18 @@ body, html {
     /* direction: rtl; */
     text-align: right;
 }
-@media (min-width: 992px) {
+#pdfFrame {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 992px) {
     .modal-xl {
-      max-width: 70%;
+        max-width: 90%;
+        margin: 10px auto;
     }
-  }
+
+    #pdfFrame {
+        max-height: 80vh;
+    }
+}
