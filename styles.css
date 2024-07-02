@@ -435,9 +435,3 @@ body, html {
             float: right; /* Add this line */
             /* or alternatively use margin-left: auto; */
         }
-        .footer-gif{
-            width: auto; /* Adjust width as needed */
-            height: 30px; /* Maintain aspect ratio */
-            margin-left: 10px; /* Add margin to the left of the GIF */
-            /* Add more styles as per your design needs */
-        }
