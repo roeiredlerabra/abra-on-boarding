@@ -5,24 +5,27 @@ export function populateEmployeeCard(employeeInfo) {
     const employeeCard = document.getElementById('employeeCard');
 
     employeeCard.innerHTML = `
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2 class="card-title">${Title}</h2>
-                    <p class="card-text">${field_13} (${field_14})</p>
-                    <p class="card-text">מחלקה: ${field_12}</p>
-                    <p class="card-text">תאריך התחלה: ${Date}</p>
-                    <p class="card-text">אימייל ארגוני: ${field_10}</p>
-                </div>
-                <div class="col-md-6">
-                    <p class="card-text">אימייל אישי: ${field_9}</p>
-                    <p class="card-text">טלפון נייד: ${field_8}</p>
-                    <p class="card-text">כתובת: ${field_11}</p>
-                    <p class="card-text project">פרוייקט ראשי: ${field_16}</p>
-                </div>
-            </div>
+    <div class="card-header">
+        <div class="user-info">
+            <h2>${Title}</h2>
+            <p>${field_13} (${field_14})</p>
         </div>
-    `;
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Microsoft_Account.svg/512px-Microsoft_Account.svg.png" alt="User Image" class="user-image">
+    </div>
+    <div class="card-body1" dir="rtl">
+        <div class="info-column">
+            <p><strong>מחלקה:</strong> ${field_12}</p>
+            <p><strong>תאריך התחלה:</strong> ${Date}</p>
+            <p><strong>אימייל ארגוני:</strong> ${field_10}</p>
+            <p><strong>אימייל אישי:</strong> ${field_9}</p>
+        </div>
+        <div class="info-column">
+            <p><strong>טלפון נייד:</strong> ${field_8}</p>
+            <p><strong>כתובת:</strong> ${field_11}</p>
+            <p><strong>פרוייקט ראשי:</strong> ${field_16}</p>
+        </div>
+    </div>
+`;
 }
 
 export function populateProgressBar(sortedData, updateDetailsCallback) {
