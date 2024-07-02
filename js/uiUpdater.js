@@ -8,7 +8,10 @@ export function populateEmployeeCard(employeeInfo) {
     <div class="card-header">
         <div class="user-info">
             <h2>${Title}</h2>
-            <p>${field_13} (${field_14})</p>
+                <div style="display: inline-block;direction: rtl;">
+        <p style="display: inline;">${field_13}</p>
+        <p style="display: inline;">(${field_14})</p>
+    </div>
         </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Microsoft_Account.svg/512px-Microsoft_Account.svg.png" alt="User Image" class="user-image">
     </div>
