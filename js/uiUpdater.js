@@ -93,6 +93,7 @@ export function updateDetails(item, sortedData) {
             <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
             <ul>${linkItems}</ul>
             ${item.EmployeeNote ? `<p class="employee-note">הערת עובד: ${item.EmployeeNote}</p>` : ''}
+            <hr class="separator">
             <div class="action-buttons">
                 ${showAddNoteButton ? `
                     <button class="btn btn-primary noteBtn" data-itemid="${item.ItemInternalId}">
