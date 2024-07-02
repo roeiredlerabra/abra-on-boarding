@@ -89,6 +89,7 @@ export function updateDetails(item, sortedData) {
             </div>
             <p class="card-text">סטטוס: ${item.field_5.Value}</p>
             <p class="card-text">תאריך: ${item.Date || ""}</p>
+            <hr class="separator">
             <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
             <ul>${linkItems}</ul>
             ${item.EmployeeNote ? `<p class="employee-note">הערת עובד: ${item.EmployeeNote}</p>` : ''}
