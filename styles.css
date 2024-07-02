@@ -149,6 +149,15 @@ footer {
     width: 100%;
     bottom: 0;
 }
+.custom-icons {
+    margin: 10px 0;
+}
+.custom-icons img {
+    width: 30px; /* Adjust size as needed */
+    height: auto;
+    margin: 0 10px;
+    vertical-align: middle;
+}
 .container {
     margin-top: 30px;
     margin-bottom: 60px;
