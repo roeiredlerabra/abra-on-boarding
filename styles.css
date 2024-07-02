@@ -350,6 +350,7 @@ body, html {
             border-radius: 50%;
             object-fit: cover;
             margin-left: 20px;
+            max-width: 80px;
         }
         
         .glossy-card .user-info {
