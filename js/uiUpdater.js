@@ -13,7 +13,7 @@ export function populateEmployeeCard(employeeInfo) {
         <p style="display: inline;">(${field_14})</p>
     </div>
         </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Microsoft_Account.svg/512px-Microsoft_Account.svg.png" alt="User Image" class="user-image">
+        <img src="img/user.svg" alt="User Image" class="user-image">
     </div>
     <div class="card-body1" dir="rtl">
         <div class="info-column">
