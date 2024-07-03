@@ -333,17 +333,31 @@ body, html {
     margin-bottom: 15px;
     font-style: italic;
 }
-        .glossy-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(200,200,200,0.3);
-            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.1);
-            padding: 20px;
-            
-            
-            width: 100%;
+.glossy-card {
+    width: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+}
+        .glossy-card::before {
+            content: "";
+            position: absolute;
+            top: -2px; right: -2px; bottom: -2px; left: -2px;
+            background: linear-gradient(to right,#ff5288, #fcf9f5, #121f3f, #ff7748, #ff5288, #ff9f00);
+            border-radius: 17px;
+            z-index: -1;
+        }
+        
+        .glossy-card::after {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: #ffffff;
+            border-radius: 15px;
+            z-index: -1;
         }
         .glossy-card .card-header {
             display: flex;
