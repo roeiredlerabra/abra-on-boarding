@@ -5,7 +5,7 @@ export function loadPdf(url) {
     const pdfFrame = document.getElementById('pdfFrame');
     pdfFrame.innerHTML = '';
 
-    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+    pdfjsLib.getDocument(url).promise.then(function (pdf) {
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
             renderPage(pdf, pageNum);
         }
@@ -13,7 +13,7 @@ export function loadPdf(url) {
 }
 
 function renderPage(pdf, pageNumber) {
-    pdf.getPage(pageNumber).then(function(page) {
+    pdf.getPage(pageNumber).then(function (page) {
         var viewport = page.getViewport({ scale: currentScale });
 
         // Create a canvas element to render the page
@@ -39,7 +39,7 @@ export function setupPdfListeners() {
     const pdfModal = new bootstrap.Modal(document.getElementById('pdfModal'));
 
     pdfLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const pdfUrl = this.getAttribute('href');
             currentUrl = pdfUrl;
@@ -48,7 +48,7 @@ export function setupPdfListeners() {
         });
     });
 
-    document.getElementById('downloadPdf').addEventListener('click', function() {
+    document.getElementById('downloadPdf').addEventListener('click', function () {
         fetch(currentUrl)
             .then(response => response.arrayBuffer())
             .then(data => {

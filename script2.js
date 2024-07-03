@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const nextButton = document.getElementById('nextStep');
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loginSpinner.style.display = 'none';
     loginFormElement.appendChild(loginSpinner);
 
-    loginFormElement.addEventListener('submit', function(e) {
+    loginFormElement.addEventListener('submit', function (e) {
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -41,25 +41,25 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify({ username, password }),
         })
-        .then(response => {
-            if (response.status === 200) {
-                // Login successful
-                loginForm.style.display = 'none';
-                mainContent.style.display = 'flex';
-            } else {
-                // Login failed
-                throw new Error('Login failed');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Login failed. Please try again.');
-        })
-        .finally(() => {
-            // Hide login spinner and re-enable submit button
-            loginSpinner.style.display = 'none';
-            submitButton.disabled = false;
-        });
+            .then(response => {
+                if (response.status === 200) {
+                    // Login successful
+                    loginForm.style.display = 'none';
+                    mainContent.style.display = 'flex';
+                } else {
+                    // Login failed
+                    throw new Error('Login failed');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Login failed. Please try again.');
+            })
+            .finally(() => {
+                // Hide login spinner and re-enable submit button
+                loginSpinner.style.display = 'none';
+                submitButton.disabled = false;
+            });
     });
     // Create a container for the success message and new employee button
     const successContainer = document.createElement('div');
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById(fieldId).addEventListener('input', () => updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2));
     });
 
-    nextButton.addEventListener('click', function() {
+    nextButton.addEventListener('click', function () {
         let errorMessages = validateStep(requiredFieldsStep1);
 
         // Validate phone number
@@ -167,13 +167,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    prevButton.addEventListener('click', function() {
+    prevButton.addEventListener('click', function () {
         step2.style.display = 'none';
         step1.style.display = 'block';
         hideAlerts();
     });
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
         let errorMessages = validateStep(requiredFieldsStep2);
 
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function submitForm() {
         // Show loading spinner
         spinner.style.display = 'block';
-        
+
         // Disable submit button
         const submitButton = form.querySelector('button[type="submit"]');
         submitButton.disabled = true;
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Collect all form data
         const formData = new FormData(form);
         const jsonData = {};
-        
+
         for (let [key, value] of formData.entries()) {
             jsonData[key] = value;
         }
@@ -211,21 +211,21 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(jsonData),
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            if (response.status === 200) {
-                return response.json();
-            } else {
-                throw new Error('Network response was not ok');
-            }
-        })
-        .then(data => {
-            console.log('Success:', data);
-            // Hide the form
-            form.style.display = 'none';
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // Hide the form
+                form.style.display = 'none';
 
-            // Show success message and new employee button
-            successContainer.innerHTML = `
+                // Show success message and new employee button
+                successContainer.innerHTML = `
                 <div class="alert alert-success">
                     פתוח לעובד תהליך קליטה חדש באתר: 
                     <a href="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" target="_blank">
@@ -234,29 +234,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
             `;
-            successContainer.style.display = 'block';
+                successContainer.style.display = 'block';
 
-            // Add event listener for the new employee button
-            document.getElementById('newEmployeeBtn').addEventListener('click', function() {
-                successContainer.style.display = 'none';
-                form.style.display = 'block';
-                form.reset();
-                step2.style.display = 'none';
-                step1.style.display = 'block';
-                hideAlerts();
-                updateButtonState(nextButton, requiredFieldsStep1);
-                updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
+                // Add event listener for the new employee button
+                document.getElementById('newEmployeeBtn').addEventListener('click', function () {
+                    successContainer.style.display = 'none';
+                    form.style.display = 'block';
+                    form.reset();
+                    step2.style.display = 'none';
+                    step1.style.display = 'block';
+                    hideAlerts();
+                    updateButtonState(nextButton, requiredFieldsStep1);
+                    updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                showAlerts(['An error occurred while submitting the form. Please try again.']);
+            })
+            .finally(() => {
+                // Hide loading spinner and re-enable submit button
+                spinner.style.display = 'none';
+                submitButton.disabled = false;
             });
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            showAlerts(['An error occurred while submitting the form. Please try again.']);
-        })
-        .finally(() => {
-            // Hide loading spinner and re-enable submit button
-            spinner.style.display = 'none';
-            submitButton.disabled = false;
-        });
     }
 
     // Initialize button states

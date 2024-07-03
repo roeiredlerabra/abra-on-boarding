@@ -1,15 +1,15 @@
 import { loadPdf, setupPdfListeners } from './pdfHandler.js';
 import { fetchEmployeeData } from './apiService.js';
-import { 
-    populateEmployeeCard, 
-    populateProgressBar, 
-    updateDetailsForFirstPendingStep, 
+import {
+    populateEmployeeCard,
+    populateProgressBar,
+    updateDetailsForFirstPendingStep,
     updateDetails,
     setupEventListeners  // Import the new function
 } from './uiUpdater.js';
 import { getUrlParameter } from './utils.js';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const loadingIndicator = document.getElementById('loading');
     const content = document.getElementById('content');
     const errorAlert = document.getElementById('error');
@@ -22,14 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
             loadingIndicator.classList.add('d-none');
             content.classList.remove('d-none');
             const sortedData = data.sort((a, b) => a.field_2 - b.field_2);
-            
+
             populateEmployeeCard(sortedData[0]);
-            
+
             // Update this line to pass both updateDetails and sortedData
             populateProgressBar(sortedData, (item) => updateDetails(item, sortedData));
-            
+
             updateDetailsForFirstPendingStep(sortedData);
-            
+
             // Add this line to set up the event listeners for the new buttons
             setupEventListeners(sortedData);
         })
@@ -61,3 +61,14 @@ let currentStep = null;
 
 // Export any functions or variables that might be needed in other modules
 export { currentStep };
+document.addEventListener('contextmenu', event => {
+    if (event.target.tagName === 'IMG') {
+        event.preventDefault();
+    }
+});
+
+window.addEventListener('dragstart', event => {
+    if (event.target.tagName === 'IMG') {
+        event.preventDefault();
+    }
+});

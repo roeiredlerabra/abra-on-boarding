@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const loadingIndicator = document.getElementById('loading');
     const content = document.getElementById('content');
     const errorAlert = document.getElementById('error');
@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentScale = window.innerWidth <= 768 ? 0.5 : 1;
     let currentUrl = '';
     pdfLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function (e) {
             e.preventDefault();
             const pdfUrl = this.getAttribute('href');
             currentUrl = this.getAttribute('href');
-            
+
             // Load PDF using PDF.js
             loadPdf(pdfUrl);
-            
+
             // Show modal
             pdfModal.show();
         });
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear previous content
         pdfFrame.innerHTML = '';
 
-        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+        pdfjsLib.getDocument(url).promise.then(function (pdf) {
             for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
                 renderPage(pdf, pageNum);
             }
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderPage(pdf, pageNumber) {
-        pdf.getPage(pageNumber).then(function(page) {
+        pdf.getPage(pageNumber).then(function (page) {
             var viewport = page.getViewport({ scale: currentScale });
 
             // Create a canvas element to render the page
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    document.getElementById('downloadPdf').addEventListener('click', function() {
+    document.getElementById('downloadPdf').addEventListener('click', function () {
         fetch(currentUrl)
             .then(response => response.arrayBuffer())
             .then(data => {
@@ -76,12 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(() => alert('Could not download PDF'));
     });
-    
-    
+
+
 
     function reloadPdf() {
         pdfFrame.innerHTML = '';
-        pdfDoc.getPage(1).then(function(page) {
+        pdfDoc.getPage(1).then(function (page) {
             renderPage(pdfDoc, 1);
         });
     }
@@ -124,29 +124,29 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify(postData)
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        loadingIndicator.classList.add('d-none');
-        content.classList.remove('d-none');
-        const sortedData = data.sort((a, b) => a.field_2 - b.field_2);
-        populateEmployeeCard(sortedData[0]);
-        populateProgressBar(sortedData);
-        updateDetailsForFirstPendingStep(sortedData);
-    })
-    .catch(error => {
-        loadingIndicator.classList.add('d-none');
-        errorAlert.classList.remove('d-none');
-        console.error('There was a problem with the fetch operation:', error);
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadingIndicator.classList.add('d-none');
+            content.classList.remove('d-none');
+            const sortedData = data.sort((a, b) => a.field_2 - b.field_2);
+            populateEmployeeCard(sortedData[0]);
+            populateProgressBar(sortedData);
+            updateDetailsForFirstPendingStep(sortedData);
+        })
+        .catch(error => {
+            loadingIndicator.classList.add('d-none');
+            errorAlert.classList.remove('d-none');
+            console.error('There was a problem with the fetch operation:', error);
+        });
 
     function populateEmployeeCard(employeeInfo) {
         const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16, Date } = employeeInfo;
-    
+
         employeeCard.innerHTML = `
             <div class="card-body">
                 <div class="row">
@@ -170,25 +170,25 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
-    
-    
+
+
 
     function populateProgressBar(sortedData) {
         progressBar.innerHTML = '';
-    
+
         sortedData.forEach((item, index) => {
             // Skip the step with index 0
             if (parseInt(item.field_2) === 0) {
                 return;
             }
-    
+
             const stepElement = document.createElement('div');
             stepElement.className = 'process-step';
             stepElement.dataset.title = item.field_3;  // Stage name
             stepElement.dataset.step = item.field_2;   // Stage index
-    
+
             let stepStatus;
-            switch(item.field_5.Value) {
+            switch (item.field_5.Value) {
                 case 'בוצע':
                     stepStatus = 'completed';
                     break;
@@ -202,14 +202,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     stepStatus = 'unknown';
             }
             stepElement.classList.add(stepStatus);
-    
+
             const progressElement = document.createElement('div');
             progressElement.className = 'progress';
             progressElement.innerHTML = `<div class="progress-bar ${stepStatus === 'completed' ? 'bg-success' : ''}" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>`;
             stepElement.appendChild(progressElement);
-    
+
             progressBar.appendChild(stepElement);
-    
+
             stepElement.addEventListener('click', () => updateDetails(item));
         });
     }
@@ -227,20 +227,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `).join('')
             : '<div class="no-responsible">Not assigned</div>';
-    
+
         // Check if field_18 contains data
         let formattedField18 = '';
         if (item.field_18) {
             // Format the field_18 content and add RTL styling
             formattedField18 = formatField18(item.field_18);
         }
-    
+
         // Split field_19 into individual links if it contains multiple URLs
         const links = item.field_19 ? item.field_19.split(',') : [];
-    
+
         // Create list items for each link
         const linkItems = links.map(link => `<li><a href="${link.trim()}">${link.trim()}</a></li>`).join('');
-    
+
         details.innerHTML = `
             <div class="card-body">
                 <h3 class="card-title">שלב : ${item.field_3}</h3>
@@ -255,21 +255,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
     }
-    
-    
+
+
     function formatField18(content) {
         // Split the content into paragraphs
         const paragraphs = content.split('\n');
-        
+
         // Initialize variables to track if we are inside a list
         let insideList = false;
         let formattedContent = '';
-        
+
         // Process each paragraph
         paragraphs.forEach(paragraph => {
             paragraph = paragraph.trim();
             if (paragraph === '') return; // Skip empty paragraphs
-            
+
             if (paragraph.startsWith('•')) {
                 // This is a bullet point
                 if (!insideList) {
@@ -291,19 +291,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-        
+
         // Close any open list
         if (insideList) {
             formattedContent += '</ul>';
         }
-    
+
         // Replace URL placeholders with actual links
         formattedContent = formattedContent.replace(/\[URL\](.*?)\[\/URL\]/g, '<a href="#">$1</a>');
         formattedContent = formattedContent.replace(/\[https?:\/\/[^\]]+\](.*?)\[\/URL\]/g, '<a href="#">$1</a>');
-    
+
         return formattedContent;
     }
-    
+
 
     function updateDetailsForFirstPendingStep(sortedData) {
         const firstPendingStep = sortedData.find(item => item.field_5.Value === 'ממתין לביצוע');

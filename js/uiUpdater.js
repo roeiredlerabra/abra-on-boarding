@@ -44,7 +44,7 @@ export function populateProgressBar(sortedData, updateDetailsCallback) {
         stepElement.dataset.step = item.field_2;
 
         let stepStatus;
-        switch(item.field_5.Value) {
+        switch (item.field_5.Value) {
             case 'בוצע': stepStatus = 'completed'; break;
             case 'ממתין לביצוע': stepStatus = 'current'; break;
             case 'לא בוצע': stepStatus = 'upcoming'; break;
@@ -121,7 +121,7 @@ export function updateDetailsForFirstPendingStep(sortedData) {
 }
 
 export function setupEventListeners(sortedData) {
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         if (event.target.classList.contains('noteBtn') || event.target.closest('.noteBtn')) {
             const button = event.target.classList.contains('noteBtn') ? event.target : event.target.closest('.noteBtn');
             const itemInternalId = button.dataset.itemid;
@@ -163,7 +163,7 @@ function openNotePopup(itemInternalId) {
 function updateSaveButtonState(textarea, button) {
     // Trim the textarea value to remove leading/trailing whitespace and newlines
     const trimmedValue = textarea.value.trim();
-    
+
     // Enable the button only if there's non-whitespace content
     button.disabled = trimmedValue.length === 0;
 }
@@ -211,11 +211,11 @@ function formatField18(content) {
     const paragraphs = content.split('\n');
     let insideList = false;
     let formattedContent = '';
-    
+
     paragraphs.forEach(paragraph => {
         paragraph = paragraph.trim();
         if (paragraph === '') return;
-        
+
         if (paragraph.startsWith('•')) {
             if (!insideList) {
                 formattedContent += '<ul>';
@@ -234,7 +234,7 @@ function formatField18(content) {
             }
         }
     });
-    
+
     if (insideList) {
         formattedContent += '</ul>';
     }
