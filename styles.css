@@ -459,3 +459,28 @@ body, html {
             float: right; /* Add this line */
             /* or alternatively use margin-left: auto; */
         }
+        #loading-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        #loading-steps {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        
+        #loading-steps .step {
+            margin-bottom: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        
+        #loading-steps .step.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+        
+        #loading-steps .fas {
+            margin-right: 10px;
+        }

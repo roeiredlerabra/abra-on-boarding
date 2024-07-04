@@ -186,23 +186,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function submitForm() {
-        // Show loading spinner
-        spinner.style.display = 'block';
-
-        // Disable submit button
-        const submitButton = form.querySelector('button[type="submit"]');
-        submitButton.disabled = true;
-
+        // Show loading container
+        const loadingContainer = document.getElementById('loading-container');
+        loadingContainer.style.display = 'block';
+        const loadingSteps = document.querySelectorAll('#loading-steps .step');
+    
+        // Hide form
+        form.style.display = 'none';
+    
         // Collect all form data
         const formData = new FormData(form);
         const jsonData = {};
-
+    
         for (let [key, value] of formData.entries()) {
             jsonData[key] = value;
         }
-
+    
         console.log('Sending data:', jsonData);
-
+    
+        // Function to update loading steps
+        function updateLoadingStep(stepIndex) {
+            loadingSteps.forEach((step, index) => {
+                if (index === stepIndex) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+    
+        // Simulate step progress
+        updateLoadingStep(0);
+        setTimeout(() => updateLoadingStep(1), 1000);
+        setTimeout(() => updateLoadingStep(2), 2000);
+    
         // Send POST request
         fetch('https://prod-119.westeurope.logic.azure.com:443/workflows/b042d076357746619aee30126e5619f3/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=RWuE9nuxxQj8NLeGNIKFiTfvk9oI80OPOVB0_jAvMOM', {
             method: 'POST',
@@ -221,41 +238,43 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(data => {
                 console.log('Success:', data);
-                // Hide the form
-                form.style.display = 'none';
-
-                // Show success message and new employee button
-                successContainer.innerHTML = `
-                <div class="alert alert-success">
-                    פתוח לעובד תהליך קליטה חדש באתר: 
-                    <a href="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" target="_blank">
-                        https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}
-                    </a>
-                </div>
-                <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
-            `;
-                successContainer.style.display = 'block';
-
-                // Add event listener for the new employee button
-                document.getElementById('newEmployeeBtn').addEventListener('click', function () {
-                    successContainer.style.display = 'none';
-                    form.style.display = 'block';
-                    form.reset();
-                    step2.style.display = 'none';
-                    step1.style.display = 'block';
-                    hideAlerts();
-                    updateButtonState(nextButton, requiredFieldsStep1);
-                    updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
-                });
+                // Update to final step
+                updateLoadingStep(3);
+                
+                // Hide loading container after a short delay
+                setTimeout(() => {
+                    loadingContainer.style.display = 'none';
+                    
+                    // Show success message and new employee button
+                    successContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            פתוח לעובד תהליך קליטה חדש באתר: 
+                            <a href="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" target="_blank">
+                                https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}
+                            </a>
+                        </div>
+                        <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
+                    `;
+                    successContainer.style.display = 'block';
+    
+                    // Add event listener for the new employee button
+                    document.getElementById('newEmployeeBtn').addEventListener('click', function () {
+                        successContainer.style.display = 'none';
+                        form.style.display = 'block';
+                        form.reset();
+                        step2.style.display = 'none';
+                        step1.style.display = 'block';
+                        hideAlerts();
+                        updateButtonState(nextButton, requiredFieldsStep1);
+                        updateButtonState(form.querySelector('button[type="submit"]'), requiredFieldsStep2);
+                    });
+                }, 1000);
             })
             .catch((error) => {
                 console.error('Error:', error);
+                loadingContainer.style.display = 'none';
+                form.style.display = 'block';
                 showAlerts(['An error occurred while submitting the form. Please try again.']);
-            })
-            .finally(() => {
-                // Hide loading spinner and re-enable submit button
-                spinner.style.display = 'none';
-                submitButton.disabled = false;
             });
     }
 
