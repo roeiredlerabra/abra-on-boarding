@@ -21,7 +21,7 @@ export function completeStepApi(currentStepId, nextStepId) {
         },
         body: JSON.stringify({
             currentStepId: currentStepId,
-            nextStepId: nextStepId,
+            nextStepId: nextStepId || '0',
             action: "step completed"
         })
     });

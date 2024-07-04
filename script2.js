@@ -12,8 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainContent = document.querySelector('.wrapper');
     const loginFormElement = document.getElementById('loginFormElement');
 
+
     // Hide main content initially
     mainContent.style.display = 'none';
+
 
     // Create login spinner element
     const loginSpinner = document.createElement('div');

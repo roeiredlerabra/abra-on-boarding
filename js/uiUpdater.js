@@ -82,7 +82,7 @@ export function updateDetails(item, sortedData) {
     const links = item.field_19 ? item.field_19.split(',') : [];
     const linkItems = links.map(link => `<li><a href="${link.trim()}">${link.trim()}</a></li>`).join('');
     const showAddNoteButton = !item.EmployeeNote;
-    const showCompleteStepButton = item.field_5.Value !== 'בוצע';
+    const showCompleteStepButton = item.field_5.Value !== 'בוצע' && item.field_5.Value == 'ממתין לביצוע';
     details.innerHTML = `
         <div class="card-body">
             <h3 class="card-title">שלב : ${item.field_3}</h3>
