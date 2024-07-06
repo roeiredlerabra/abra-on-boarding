@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Onboarding Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .wrapper {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark ">
+            <div class="container-fluid">
+                <a class="navbar-brand">
+                    <img src="https://raw.githubusercontent.com/roeiredlerabra/abra-on-boarding/main/img/_master_logo_%D7%90%D7%91%D7%A8%D7%90%20%D7%91%D7%9C%D7%91%D7%9F.gif"
+                        alt="Company Logo">
+                    &nbsp; Microsoft Solutions
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav" dir="rtl">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                פורטל ארגוני
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                                <li><a class="dropdown-item"
+                                        href="https://abrait.sharepoint.com/">דף הבית</a>
+                                </li>
+                                <li><a class="dropdown-item" href="https://abrait.sharepoint.com/MSSolutions/SitePages/%D7%A0%D7%94%D7%9C%D7%99%D7%9D.aspx?web=1">נהלי חברה</a></li>
+                                <li><a class="dropdown-item" href="https://abrait.sharepoint.com/MSSolutions/SitePages/%D7%A2%D7%93%D7%9B%D7%95%D7%A0%D7%99-%D7%94%D7%A4%D7%A2%D7%99%D7%9C%D7%95%D7%AA.aspx?web=1">מה חדש?</a></li>
+                                <li><a class="dropdown-item" href="https://abrait.sharepoint.com/MSSolutions/SitePages/Onboording.aspx?web=1">Onboarding</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                שירותים
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                <li><a class="dropdown-item" href="https://wkf.ms/3tnxWhk">לינק לפתיחת תקלת IT</a></li>
+                                <li><a class="dropdown-item" href="https://forms.office.com/Pages/ResponsePage.aspx?id=HPwZQL5ZLECX_mPKmhodmtPiIsyB4WtBsCq2o0cDTyFUME5YQUsyTzVJUjhGS0JXTlhCS1VEQk9WWS4u&lang=he-IL&themecolor=0078d4&oembedsso=true&hostId=fc97d5326cb44b138f69ccd399cf43dd&origin=FormsWebPart">טופס בקשת מידע נוסף</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item pdf-link"
+                                        href="img/WMF_Coffee_Machines_espresso_Brochure_en_2021_07.pdf"
+                                        data-bs-toggle="modal" data-bs-target="#pdfModal">Special Service</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="loginForm" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h5>Login</h5>
+            </div>
+            <div class="card-body">
+                <form id="loginFormElement">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Employee Onboarding Dashboard</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <canvas id="departmentChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <canvas id="timelineChart"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <canvas id="stageProgressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Employee Onboarding Progress</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Department</th>
+                                <th>Current Stage</th>
+                                <th>Start Date</th>
+                                <th>Completion Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeListBody">
+                            <!-- Employee data will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
