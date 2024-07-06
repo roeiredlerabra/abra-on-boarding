@@ -181,6 +181,12 @@ body, html {
     background-position: left calc(10px + 90%), right center; /* Adjusted positioning */
     background-size: 150px 150px, 110px 110px; /* Adjust size as needed */
 }
+/* Styles for mobile devices */
+@media (max-width: 767px) {
+    body, html {
+        background-image: none;
+    }
+}
 .content {
     flex: 1; /* Take up remaining vertical space */
     /* Example styles for content */
