@@ -1,8 +1,16 @@
 import { sendNoteToApi, completeStepApi } from './stepActions.js';
-
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
+}
 export function populateEmployeeCard(employeeInfo) {
     const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16, Date } = employeeInfo;
     const employeeCard = document.getElementById('employeeCard');
+    const formattedStartDate = formatDate(Date);
 
     employeeCard.innerHTML = `
     <div class="card-header">
@@ -18,7 +26,7 @@ export function populateEmployeeCard(employeeInfo) {
     <div class="card-body1" dir="rtl">
         <div class="info-column">
             <p><strong>מחלקה:</strong> ${field_12}</p>
-            <p><strong>תאריך התחלה:</strong> ${Date}</p>
+            <p><strong>תאריך התחלה:</strong> ${formattedStartDate}</p>
             <p><strong>אימייל ארגוני:</strong> ${field_10}</p>
             <p><strong>אימייל אישי:</strong> ${field_9}</p>
         </div>
@@ -83,6 +91,7 @@ export function updateDetails(item, sortedData) {
     const linkItems = links.map(link => `<li><a href="${link.trim()}">${link.trim()}</a></li>`).join('');
     const showAddNoteButton = !item.EmployeeNote;
     const showCompleteStepButton = item.field_5.Value !== 'בוצע' && item.field_5.Value == 'ממתין לביצוע';
+    const formattedDate = formatDate(item.Date);
     details.innerHTML = `
         <div class="card-body">
             <h3 class="card-title">שלב : ${item.field_3}</h3>
@@ -91,7 +100,7 @@ export function updateDetails(item, sortedData) {
                 ${responsiblesHtml}
             </div>
             <p class="card-text">סטטוס: ${item.field_5.Value}</p>
-            <p class="card-text">תאריך: ${item.Date || ""}</p>
+            <p class="card-text">תאריך: ${formattedDate}</p>
             <hr class="separator">
             <div class="card-text info-content" style="direction: rtl;">${formattedField18}</div>
             <ul>${linkItems}</ul>
