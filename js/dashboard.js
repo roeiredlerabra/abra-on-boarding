@@ -114,8 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Process timeline
             const startDate = firstStep.Date;
             if (startDate) {
-                const timelineKey = startDate.split('T')[0];
-                processedData.timeline[timelineKey] = (processedData.timeline[timelineKey] || 0) + 1;
+                const monthKey = startDate.substr(0, 7); // Extract YYYY-MM from YYYY-MM-DD
+                processedData.timeline[monthKey] = (processedData.timeline[monthKey] || 0) + 1;
             }
     
             // Process stage progress
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     datasets: [{
                         label: 'Employees',
                         data: Object.values(data.departmentCounts),
-                        backgroundColor: '#007bff'
+                        backgroundColor: '#17a2b8'
                     }]
                 },
                 options: {
@@ -214,17 +214,50 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     
         // Timeline Chart
-        const sortedDates = Object.keys(data.timeline).sort();
-        if (sortedDates.length > 0) {
+        const sortedMonths = Object.keys(data.timeline).sort();
+        if (sortedMonths.length > 0) {
             new Chart(document.getElementById('timelineChart'), {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: sortedDates,
+                    labels: sortedMonths.map(monthKey => {
+                        const [year, month] = monthKey.split('-');
+                        return new Date(year, month - 1).toLocaleString('default', { month: 'short', year: 'numeric' });
+                    }),
                     datasets: [{
                         label: 'Employees Onboarded',
-                        data: sortedDates.map(date => data.timeline[date]),
+                        data: sortedMonths.map(month => data.timeline[month]),
                         borderColor: '#17a2b8',
-                        fill: false
+                        fill: false,
+                        backgroundColor: [
+                            '#6c757d', // Grey
+                            '#ff5733', // Coral
+                            '#33ff57', // Light Green
+                            '#28a745', // Green
+                            '#ffc107', // Yellow
+                            '#dc3545', // Red
+                            '#007bff', // Blue
+                            '#6610f2', // Purple
+                            '#6f42c1', // Indigo
+                            '#e83e8c', // Pink
+                            '#fd7e14', // Orange
+                            '#20c997', // Teal
+                            '#17a2b8', // Cyan
+                            '#343a40', // Dark
+                            '#6c757d', // Grey
+                            '#ff5733', // Coral
+                            '#33ff57', // Light Green
+                            '#ff33ff', // Magenta
+                            '#33ccff', // Light Blue
+                            '#ffcc33', // Light Orange
+                            '#cc33ff', // Violet
+                            '#33ffcc', // Aqua
+                            '#ffd700', // Gold
+                            '#ff69b4', // Hot Pink
+                            '#98fb98', // Pale Green
+                            '#ffa07a', // Light Salmon
+                            '#9370db'  // Medium Purple
+                          ]
+                          
                     }]
                 },
                 options: {
@@ -232,14 +265,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Onboarding Timeline'
+                            text: 'Monthly Onboarding Timeline'
                         }
                     },
                     scales: {
                         x: {
                             title: {
                                 display: true,
-                                text: 'Date'
+                                text: 'Month'
                             }
                         },
                         y: {
@@ -247,6 +280,9 @@ document.addEventListener('DOMContentLoaded', function () {
                             title: {
                                 display: true,
                                 text: 'Number of Employees'
+                            },
+                            ticks: {
+                                stepSize: 1
                             }
                         }
                     }
