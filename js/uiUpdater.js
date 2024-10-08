@@ -126,6 +126,16 @@ export function updateDetailsForFirstPendingStep(sortedData) {
     const firstPendingStep = sortedData.find(item => item.field_5.Value === 'ממתין לביצוע');
     if (firstPendingStep) {
         updateDetails(firstPendingStep, sortedData);
+        
+        // Auto-scroll to the first pending step in the progress bar
+        const stepElement = document.querySelector(`.process-step[data-step="${firstPendingStep.field_2}"]`);
+        if (stepElement) {
+            stepElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center'
+            });
+        }
     }
 }
 
