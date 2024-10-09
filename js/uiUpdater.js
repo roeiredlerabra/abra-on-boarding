@@ -90,6 +90,7 @@ export function updateDetails(item, sortedData) {
     const links = item.field_19 ? item.field_19.split(',') : [];
     const linkItems = links.map(link => `<li><a href="${link.trim()}">${link.trim()}</a></li>`).join('');
     const showAddNoteButton = !item.EmployeeNote;
+    const showEditNoteButton = item.EmployeeNote;
     const showCompleteStepButton = item.field_5.Value !== 'בוצע' && item.field_5.Value == 'ממתין לביצוע';
     const formattedDate = formatDate(item.Date);
     details.innerHTML = `
@@ -106,10 +107,15 @@ export function updateDetails(item, sortedData) {
             <ul>${linkItems}</ul>
             ${item.EmployeeNote ? `<p class="employee-note">הערת עובד: ${item.EmployeeNote}</p>` : ''}
             <hr class="separator">
-            <div class="action-buttons">
+             <div class="action-buttons">
                 ${showAddNoteButton ? `
                     <button class="btn btn-primary noteBtn" data-itemid="${item.ItemInternalId}">
                         <i class="fas fa-sticky-note"></i> הוסף הערה
+                    </button>
+                ` : ''}
+                ${showEditNoteButton ? `
+                    <button class="btn btn-secondary editNoteBtn" data-itemid="${item.ItemInternalId}">
+                        <i class="fas fa-edit"></i> ערוך הערה
                     </button>
                 ` : ''}
                 ${showCompleteStepButton ? `
@@ -145,6 +151,10 @@ export function setupEventListeners(sortedData) {
             const button = event.target.classList.contains('noteBtn') ? event.target : event.target.closest('.noteBtn');
             const itemInternalId = button.dataset.itemid;
             openNotePopup(itemInternalId);
+        } else if (event.target.classList.contains('editNoteBtn') || event.target.closest('.editNoteBtn')) {
+            const button = event.target.classList.contains('editNoteBtn') ? event.target : event.target.closest('.editNoteBtn');
+            const itemInternalId = button.dataset.itemid;
+            openEditNotePopup(itemInternalId, sortedData);
         } else if (event.target.classList.contains('completeStepBtn') || event.target.closest('.completeStepBtn')) {
             const button = event.target.classList.contains('completeStepBtn') ? event.target : event.target.closest('.completeStepBtn');
             const itemInternalId = button.dataset.itemid;
@@ -153,15 +163,15 @@ export function setupEventListeners(sortedData) {
     });
 }
 
-function openNotePopup(itemInternalId) {
+function openNotePopup(itemInternalId, existingNote = '') {
     const popup = document.createElement('div');
     popup.className = 'popup';
     popup.innerHTML = `
         <div class="popup-content">
-            <h4>הוסף הערה</h4>
-            <textarea id="noteText" class="note-textarea" rows="4" style="direction: rtl;"></textarea>
+            <h4>${existingNote ? 'ערוך הערה' : 'הוסף הערה'}</h4>
+            <textarea id="noteText" class="note-textarea" rows="4" style="direction: rtl;">${existingNote}</textarea>
             <div class="popup-buttons">
-                <button id="saveNote" class="btn btn-primary" disabled>שמור</button>
+                <button id="saveNote" class="btn btn-primary" ${existingNote ? '' : 'disabled'}>שמור</button>
                 <button id="closePopup" class="btn btn-secondary">סגור</button>
             </div>
         </div>
@@ -178,7 +188,12 @@ function openNotePopup(itemInternalId) {
     saveNoteButton.addEventListener('click', () => saveNote(itemInternalId));
     document.getElementById('closePopup').addEventListener('click', () => document.body.removeChild(popup));
 }
-
+function openEditNotePopup(itemInternalId, sortedData) {
+    const item = sortedData.find(item => item.ItemInternalId === itemInternalId);
+    if (item && item.EmployeeNote) {
+        openNotePopup(itemInternalId, item.EmployeeNote);
+    }
+}
 function updateSaveButtonState(textarea, button) {
     // Trim the textarea value to remove leading/trailing whitespace and newlines
     const trimmedValue = textarea.value.trim();
