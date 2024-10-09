@@ -246,9 +246,12 @@ function formatField18(content) {
                 formattedContent += '</ul>';
                 insideList = false;
             }
-            if (paragraph.endsWith(':')) {
-                formattedContent += `<h4>${paragraph}</h4>`;
+
+            // Handle single words with * as <h4> and keep other text as is
+            if (paragraph.startsWith('*') && paragraph.endsWith('*') && paragraph.split(' ').length === 1) {
+                formattedContent += `<h4>${paragraph.slice(1, -1).trim()}</h4>`;
             } else {
+                paragraph = paragraph.replace(/\*(\S.*?)\*/g, '<h4>$1</h4>');
                 formattedContent += `<p>${paragraph}</p>`;
             }
         }
@@ -263,3 +266,6 @@ function formatField18(content) {
 
     return formattedContent;
 }
+
+
+
