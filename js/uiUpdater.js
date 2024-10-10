@@ -8,35 +8,51 @@ function formatDate(dateString) {
     return `${day}.${month}.${year}`;
 }
 export function populateEmployeeCard(employeeInfo) {
-    const { Title, field_13, field_14, field_12, field_9, field_10, field_8, field_11, field_16, Date } = employeeInfo;
+    const { 
+        Title = "אין ערך זמין",
+        field_13 = "אין ערך זמין",
+        field_14 = "אין ערך זמין",
+        field_12 = "אין ערך זמין",
+        field_9 = "אין ערך זמין",
+        field_10 = "אין ערך זמין",
+        field_8 = "אין ערך זמין",
+        field_11 = "אין ערך זמין",
+        field_16 = "אין ערך זמין",
+        field_17 = "אין ערך זמין",
+        Date = null
+    } = employeeInfo;
+
     const employeeCard = document.getElementById('employeeCard');
-    const formattedStartDate = formatDate(Date);
+    const formattedStartDate = Date ? formatDate(Date) : "אין ערך זמין";
+
+    const getValueOrDefault = (value) => value && value.trim() !== "" ? value : "אין ערך זמין";
 
     employeeCard.innerHTML = `
     <div class="card-header">
         <div class="user-info">
-            <h2>${Title}</h2>
-                <div style="display: inline-block;direction: rtl;">
-        <p style="display: inline;">${field_13}</p>
-        <p style="display: inline;">(${field_14})</p>
-    </div>
+            <h2>${getValueOrDefault(Title)}</h2>
+            <div style="display: inline-block;direction: rtl;">
+                <p style="display: inline;">${getValueOrDefault(field_13)}</p>
+                <p style="display: inline;">(${getValueOrDefault(field_14)})</p>
+            </div>
         </div>
         <img src="img/user.svg" alt="User Image" class="user-image">
     </div>
     <div class="card-body1" dir="rtl">
         <div class="info-column">
-            <p><strong>מחלקה:</strong> ${field_12}</p>
+            <p><strong>מחלקה:</strong> ${getValueOrDefault(field_12)}</p>
             <p><strong>תאריך התחלה:</strong> ${formattedStartDate}</p>
-            <p><strong>אימייל ארגוני:</strong> ${field_10}</p>
-            <p><strong>אימייל אישי:</strong> ${field_9}</p>
+            <p><strong>אימייל ארגוני:</strong> ${getValueOrDefault(field_10)}</p>
+            <p><strong>אימייל אישי:</strong> ${getValueOrDefault(field_9)}</p>
         </div>
         <div class="info-column">
-            <p><strong>טלפון נייד:</strong> ${field_8}</p>
-            <p><strong>כתובת:</strong> ${field_11}</p>
-            <p><strong>פרוייקט ראשי:</strong> ${field_16}</p>
+            <p><strong>טלפון נייד:</strong> ${getValueOrDefault(field_8)}</p>
+            <p><strong>כתובת:</strong> ${getValueOrDefault(field_11)}</p>
+            <p><strong>פרוייקט ראשי:</strong> ${getValueOrDefault(field_16)}</p>
+            <p><strong>מנהל ישיר:</strong> ${getValueOrDefault(field_17)}</p>
         </div>
     </div>
-`;
+    `;
 }
 
 export function populateProgressBar(sortedData, updateDetailsCallback) {
