@@ -490,3 +490,33 @@ body, html {
         #loading-steps .fas {
             margin-right: 10px;
         }
+        .mentor-info {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .mentor-label {
+            margin-right: 10px;
+            white-space: nowrap;
+            color: #cf4f22;
+        }
+        
+        .mentor-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .mentor-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .mentor-text p {
+            margin: 0;
+            font-size: 0.9em;
+            text-align: center;
+        }

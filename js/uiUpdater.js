@@ -8,7 +8,7 @@ function formatDate(dateString) {
     return `${day}.${month}.${year}`;
 }
 export function populateEmployeeCard(employeeInfo) {
-    const { 
+    const {
         Title = "אין ערך זמין",
         field_13 = "אין ערך זמין",
         field_14 = "אין ערך זמין",
@@ -16,16 +16,21 @@ export function populateEmployeeCard(employeeInfo) {
         field_9 = "אין ערך זמין",
         field_10 = "אין ערך זמין",
         field_8 = "אין ערך זמין",
-        field_11 = "אין ערך זמין",
         field_16 = "אין ערך זמין",
         field_17 = "אין ערך זמין",
-        Date = null
+        Date = null,
+        Mentor = null
     } = employeeInfo;
 
     const employeeCard = document.getElementById('employeeCard');
     const formattedStartDate = Date ? formatDate(Date) : "אין ערך זמין";
 
     const getValueOrDefault = (value) => value && value.trim() !== "" ? value : "אין ערך זמין";
+
+    // Check if mentor data is available and not empty
+    const isMentorDataAvailable = Mentor && 
+        (Mentor.DisplayName || Mentor.Email) &&
+        (Mentor.DisplayName !== "אין ערך זמין" || Mentor.Email !== "אין ערך זמין");
 
     employeeCard.innerHTML = `
     <div class="card-header">
@@ -44,12 +49,26 @@ export function populateEmployeeCard(employeeInfo) {
             <p><strong>תאריך התחלה:</strong> ${formattedStartDate}</p>
             <p><strong>אימייל ארגוני:</strong> ${getValueOrDefault(field_10)}</p>
             <p><strong>אימייל אישי:</strong> ${getValueOrDefault(field_9)}</p>
+           
         </div>
         <div class="info-column">
-            <p><strong>טלפון נייד:</strong> ${getValueOrDefault(field_8)}</p>
-            <p><strong>כתובת:</strong> ${getValueOrDefault(field_11)}</p>
+         <p><strong>טלפון נייד:</strong> ${getValueOrDefault(field_8)}</p>
             <p><strong>פרוייקט ראשי:</strong> ${getValueOrDefault(field_16)}</p>
             <p><strong>מנהל ישיר:</strong> ${getValueOrDefault(field_17)}</p>
+            ${isMentorDataAvailable ? `
+            <div class="mentor-info">
+                <strong class="mentor-label">מנטור:</strong>
+                <div class="mentor-details">
+                    <img src="${ 'img/Untitled design (24).png'}" alt="Mentor" class="mentor-image">
+                    <div class="mentor-text">
+                        <p><strong>${getValueOrDefault(Mentor.DisplayName)}</strong></p>
+
+                        <p>${getValueOrDefault(Mentor.Email)}</p>
+                        <p>${getValueOrDefault(Mentor.JobTitle)}</p>
+                    </div>
+                </div>
+            </div>
+            ` : ''}
         </div>
     </div>
     `;
