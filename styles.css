@@ -520,3 +520,11 @@ body, html {
             font-size: 0.9em;
             text-align: center;
         }
+        .form-label:has(+ [required]):after {
+            content: ' *';
+            color: #dc3545;
+            font-weight: normal;
+            font-family: Arial;
+            font-size: 15px;
+            vertical-align: top;
+        }
