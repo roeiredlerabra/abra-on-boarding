@@ -178,6 +178,12 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         let errorMessages = validateStep(requiredFieldsStep2);
+ // Validate mentor email
+ const mentorEmailField = document.getElementById('mentorEmail');
+ if (mentorEmailField.value.trim() !== '' && !validateEmail(mentorEmailField.value)) {
+     mentorEmailField.classList.add('is-invalid');
+     errorMessages.push('נא להזין כתובת אימייל תקינה עבור המנטור');
+ }
 
         if (errorMessages.length === 0) {
             hideAlerts();
@@ -255,6 +261,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}
                             </a>
                         </div>
+                         <iframe src="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" width="100%" height="600" frameborder="0"></iframe>
+
                         <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
                     `;
                     successContainer.style.display = 'block';
