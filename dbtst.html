@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח קליטת עובדים</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/he.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --fc-border-color: #e5e7eb;
+            --fc-button-text-color: #ffffff;
+            --fc-button-bg-color: #3b82f6;
+            --fc-button-border-color: #3b82f6;
+            --fc-button-hover-bg-color: #2563eb;
+            --fc-button-hover-border-color: #2563eb;
+        }
+        body {
+            font-family: 'Arial Hebrew', Arial, sans-serif;
+        }
+        #calendar {
+            max-width: 1000px;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">לוח קליטת עובדים</h1>
+        <div id="calendar" class="bg-white shadow-lg rounded-lg overflow-hidden mb-8"></div>
+        <div id="employeeDetails" class="bg-white shadow-lg rounded-lg p-6" style="display: none;"></div>
+    </div>
+
+    <script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            header: {
+                right: 'prev,next today',
+                center: 'title',
+                left: 'month,agendaWeek,agendaDay'
+            },
+            defaultView: 'month',
+            locale: 'he',
+            isRTL: true,
+            events: function(start, end, timezone, callback) {
+                fetch('https://prod-101.westeurope.logic.azure.com:443/workflows/bf300bc8879a4537910d9df618ead05c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=jMJwQxxi0-aB8Mn0agnl4lFHDg2KHVhwb0H0GgwXarE', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const events = processEmployeeData(data);
+                    callback(events);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    callback([]);
+                });
+            },
+            eventClick: function(event, jsEvent, view) {
+                showEmployeeDetails(event);
+            },
+            eventRender: function(event, element) {
+                const overallStatus = calculateOverallStatus(event.steps);
+                element.css('background-color', getStatusColor(overallStatus));
+                element.css('border-color', getStatusColor(overallStatus));
+                element.find('.fc-title').text(event.title);
+            }
+        });
+
+        function processEmployeeData(data) {
+            const employeeMap = {};
+            data.forEach(item => {
+                if (!employeeMap[item.field_0]) {
+                    employeeMap[item.field_0] = {
+                        id: item.field_0,
+                        title: `${item.field_6} ${item.field_7}`,
+                        start: item.Date,
+                        steps: []
+                    };
+                }
+                employeeMap[item.field_0].steps.push({
+                    name: item.field_3,
+                    status: item.field_5.Value,
+                    employeeNote: item.EmployeeNote,
+                    field_2: parseInt(item.field_2, 10)
+                });
+            });
+            return Object.values(employeeMap);
+        }
+
+        function showEmployeeDetails(event) {
+            const detailsEl = document.getElementById('employeeDetails');
+            const overallStatus = calculateOverallStatus(event.steps);
+            const statusClass = getStatusClass(overallStatus);
+            const statusIcon = getStatusIcon(overallStatus);
+            
+            event.steps.sort((a, b) => a.field_2 - b.field_2);
+            const groupedSteps = groupStepsByStatus(event.steps);
+
+            let stepsHtml = Object.entries(groupedSteps).map(([status, steps]) => {
+                const stepsListHtml = steps.map(step => {
+                    const stepIcon = getStatusIcon(step.status);
+                    return `
+                        <li class="bg-gray-50 rounded-lg p-4 mb-4 shadow transition-transform hover:scale-105">
+                            <div class="flex items-center">
+                                <span class="text-2xl mr-4" aria-hidden="true">${stepIcon}</span>
+                                <div>
+                                    <div class="font-semibold">${step.name}</div>
+                                    <div class="text-sm text-gray-600">${step.status}</div>
+                                    ${step.employeeNote ? `<div class="mt-2 p-2 bg-blue-50 border-r-4 border-blue-500 rounded">${step.employeeNote}</div>` : ''}
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="mb-6">
+                        <h3 class="text-xl font-semibold mb-4">${getStatusTranslation(status)}</h3>
+                        <ul class="space-y-4">
+                            ${stepsListHtml}
+                        </ul>
+                    </div>
+                `;
+            }).join('');
+
+            detailsEl.innerHTML = `
+                <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                    <h2 class="text-2xl font-bold">${event.title}</h2>
+                    <span class="px-4 py-2 rounded-full ${statusClass} text-white flex items-center" title="סטטוס כללי: ${overallStatus}">
+                        ${statusIcon} <span class="mr-2">${overallStatus}</span>
+                    </span>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">שלבי קליטה:</h3>
+                ${stepsHtml}
+            `;
+            detailsEl.style.display = 'block';
+        }
+        
+        function groupStepsByStatus(steps) {
+            return steps.reduce((acc, step) => {
+                if (!acc[step.status]) {
+                    acc[step.status] = [];
+                }
+                acc[step.status].push(step);
+                return acc;
+            }, {});
+        }
+
+        function getStatusTranslation(status) {
+            const translations = {
+                'בוצע': 'הושלם',
+                'בתהליך': 'בתהליך',
+                'ממתין לביצוע': 'ממתין לביצוע'
+            };
+            return translations[status] || status;
+        }
+
+        function getStatusIcon(status) {
+            switch(status) {
+                case 'בוצע': return '<i class="fas fa-check-circle text-green-500"></i>';
+                case 'בתהליך': return '<i class="fas fa-clock text-yellow-500"></i>';
+                case 'ממתין לביצוע': return '<i class="fas fa-hourglass-start text-red-500"></i>';
+                default: return '<i class="fas fa-question-circle text-gray-500"></i>';
+            }
+        }
+        
+        function calculateOverallStatus(steps) {
+            if (steps.every(step => step.status === 'בוצע')) {
+                return 'בוצע';
+            } else if (steps.some(step => step.status === 'בתהליך')) {
+                return 'בתהליך';
+            } else {
+                return 'ממתין לביצוע';
+            }
+        }
+
+        function getStatusColor(status) {
+            switch(status) {
+                case 'בוצע': return '#10B981';
+                case 'בתהליך': return '#F59E0B';
+                case 'ממתין לביצוע': return '#EF4444';
+                default: return '#6B7280';
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'בוצע': return 'bg-green-500';
+                case 'בתהליך': return 'bg-yellow-500';
+                case 'ממתין לביצוע': return 'bg-red-500';
+                default: return 'bg-gray-500';
+            }
+        }
+    });
+    </script>
+</body>
+</html>
