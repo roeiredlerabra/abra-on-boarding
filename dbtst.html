@@ -25,19 +25,22 @@
         body {
             font-family: 'Arial Hebrew', Arial, sans-serif;
         }
-        #calendar {
-            max-width: 1000px;
-        }
         .fc-event {
             cursor: pointer;
+        }
+        #calendar, #employeeDetails {
+            height: calc(100vh - 120px);
+            overflow-y: auto;
         }
     </style>
 </head>
 <body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container-fluid mx-auto px-4 py-8">
         <h1 class="text-4xl font-bold text-center mb-8">לוח קליטת עובדים</h1>
-        <div id="calendar" class="bg-white shadow-lg rounded-lg overflow-hidden mb-8"></div>
-        <div id="employeeDetails" class="bg-white shadow-lg rounded-lg p-6" style="display: none;"></div>
+        <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-8 lg:space-x-reverse">
+            <div id="calendar" class="bg-white shadow-lg rounded-lg overflow-hidden lg:w-1/2"></div>
+            <div id="employeeDetails" class="bg-white shadow-lg rounded-lg p-6 lg:w-1/2" style="display: none;"></div>
+        </div>
     </div>
 
     <script>
@@ -51,6 +54,7 @@
             defaultView: 'month',
             locale: 'he',
             isRTL: true,
+            height: 'auto',
             events: function(start, end, timezone, callback) {
                 fetch('https://prod-101.westeurope.logic.azure.com:443/workflows/bf300bc8879a4537910d9df618ead05c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=jMJwQxxi0-aB8Mn0agnl4lFHDg2KHVhwb0H0GgwXarE', {
                     method: 'POST',
