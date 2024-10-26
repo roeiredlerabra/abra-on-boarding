@@ -34,6 +34,7 @@
     padding: 0 30px;
     min-width: 240px;
     flex: 1;
+    cursor: pointer;
 }
 
 .process-step::before {
