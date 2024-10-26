@@ -5,6 +5,7 @@
     scrollbar-width: thin;
     scrollbar-color: #6c6c6c #f1f1f1;
 }
+
 .process-step-wrapper::-webkit-scrollbar {
     width: 12px;
   }
@@ -352,7 +353,7 @@ body, html {
     width: 300px;
     padding: 20px;
     background-color: #ffffff;
-    position: relative;
+    position: sticky;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 100%;
