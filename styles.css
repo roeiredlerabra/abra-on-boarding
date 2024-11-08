@@ -4,6 +4,7 @@
     height: 100px;
     scrollbar-width: thin;
     scrollbar-color: #6c6c6c #f1f1f1;
+    direction: rtl; /* Added for RTL support */
 }
 
 .process-step-wrapper::-webkit-scrollbar {
@@ -27,6 +28,7 @@
     display: flex;
     min-width: max-content;
     position: relative;
+    
 }
 
 .process-step {
@@ -115,7 +117,7 @@
 }
 
 .process-step:first-child .progress {
-    left: 50%;
+    right: 50%;
     width: 50%;
 }
 
@@ -124,7 +126,7 @@
 }
 
 .process-step:not(:first-child) .progress {
-    left: 0;
+    right: 0;
 }
 header {
     background-color: #121f3f;
