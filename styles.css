@@ -532,3 +532,23 @@ body, html {
             font-size: 15px;
             vertical-align: top;
         }
+        .form-container {
+            max-width: 768px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .step-title {
+            margin-bottom: 2rem;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 1rem;
+        }
+        .btn-group {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
