@@ -257,11 +257,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     successContainer.innerHTML = `
                         <div class="alert alert-success">
                             פתוח לעובד תהליך קליטה חדש באתר: 
-                            <a href="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" target="_blank">
-                                https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}
+                            <a href="https://welcome-ms.netlify.app/?id=${data.id}" target="_blank">
+                                https://welcome-ms.netlify.app/?id=${data.id}
                             </a>
                         </div>
-                         <iframe src="https://roeiredlerabra.github.io/abra-on-boarding/?id=${data.id}" width="100%" height="600" frameborder="0"></iframe>
+                         <iframe src="https://welcome-ms.netlify.app/?id=${data.id}" width="100%" height="600" frameborder="0"></iframe>
 
                         <button class="btn btn-primary" id="newEmployeeBtn">הגש עובד חדש</button>
                     `;

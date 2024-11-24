@@ -94,73 +94,76 @@
                     <h5>הגשת עובד חדש</h5>
                 </div>
                 <div class="card-body">
-                    <form id="newEmployeeForm" dir="rtl">
+                    <form id="newEmployeeForm">
                         <!-- Step 1 -->
                         <div id="step1">
-                            <div class="mb-3">
-                                <label for="employeeFirstName" class="form-label">שם פרטי</label>
-                                <input type="text" class="form-control" id="employeeFirstName" name="employeeFirstName"
-                                    required>
+                            <h3 class="step-title">פרטים אישיים</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="employeeFirstName" class="form-label">שם פרטי</label>
+                                    <input type="text" class="form-control" id="employeeFirstName" name="employeeFirstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="employeeLastName" class="form-label">שם משפחה</label>
+                                    <input type="text" class="form-control" id="employeeLastName" name="employeeLastName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="employeeEmail" class="form-label">דוא"ל</label>
+                                    <input type="email" class="form-control" id="employeeEmail" name="employeeEmail" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="employeePhone" class="form-label">טלפון</label>
+                                    <input type="tel" class="form-control" id="employeePhone" name="employeePhone" required>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="employeeLastName" class="form-label">שם משפחה</label>
-                                <input type="text" class="form-control" id="employeeLastName" name="employeeLastName"
-                                    required>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary" id="nextStep">הבא</button>
                             </div>
-                            <div class="mb-3">
-                                <label for="employeeEmail" class="form-label">דוא"ל</label>
-                                <input type="email" class="form-control" id="employeeEmail" name="employeeEmail"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="employeePhone" class="form-label">טלפון</label>
-                                <input type="tel" class="form-control" id="employeePhone" name="employeePhone" required>
-                            </div>
-                            <button type="button" class="btn btn-primary" id="nextStep">הבא</button>
                         </div>
-
+        
                         <!-- Step 2 -->
                         <div id="step2" style="display: none;">
-                            <div class="mb-3">
-                                <label for="employeeAddress" class="form-label">כתובת</label>
-                                <input type="text" class="form-control" id="employeeAddress" name="employeeAddress"
-                                    required>
+                            <h3 class="step-title">פרטי התפקיד</h3>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="employeeAddress" class="form-label">כתובת</label>
+                                    <input type="text" class="form-control" id="employeeAddress" name="employeeAddress" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="employeePosition" class="form-label">תפקיד</label>
+                                    <input type="text" class="form-control" id="employeePosition" name="employeePosition" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="projectTarget" class="form-label">פרוייקט מיועד</label>
+                                    <input type="text" class="form-control" id="projectTarget" name="projectTarget" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="employeeDepartment" class="form-label">מחלקה</label>
+                                    <select class="form-select" id="employeeDepartment" name="employeeDepartment" required>
+                                        <option value="" selected disabled>בחר מחלקה</option>
+                                        <option value="Microsoft Dynamics CRM">Microsoft Dynamics CRM</option>
+                                        <option value="Microsoft Dynamics Business Central">Microsoft Dynamics Business Central</option>
+                                        <option value="Microsoft Dynamics Finance and Operations">Microsoft Dynamics Finance and Operations</option>
+                                        <option value="Microsoft BI">Microsoft BI</option>
+                                        <option value="Human Resources">משאבי אנוש</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="startDate" class="form-label">תאריך תחילת עבודה</label>
+                                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="mentorEmail" class="form-label">דוא"ל המנטור</label>
+                                    <input type="email" class="form-control" id="mentorEmail" name="mentorEmail" placeholder="הזן כתובת דוא&quot;ל של עובד אברא">
+                                    <div class="form-text">
+                                        זה לא שדה חובה, רק במידה ובפעילות הרלוונטית קיים ליווי מנטור אז אפשר למלא מידע, אחרת נא להשאיר ריק
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="employeePosition" class="form-label">תפקיד</label>
-                                <input type="text" class="form-control" id="employeePosition" name="employeePosition"
-                                    required>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary" id="prevStep">הקודם</button>
+                                <button type="submit" class="btn btn-primary">שלח</button>
                             </div>
-                            <div class="mb-3">
-                                <label for="projectTarget" class="form-label">פרוייקט מיועד</label>
-                                <input type="text" class="form-control" id="projectTarget" name="projectTarget"
-                                    required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="employeeDepartment" class="form-label">מחלקה</label>
-                                <select class="form-select" id="employeeDepartment" name="employeeDepartment" required>
-                                    <option value="" selected disabled>בחר מחלקה</option>
-                                    <option value="Microsoft Dynamics CRM">Microsoft Dynamics CRM</option>
-                                    <option value="Microsoft Dynamics Business Central">Microsoft Dynamics Business
-                                        Central</option>
-                                    <option value="Microsoft Dynamics Finance and Operations">Microsoft Dynamics Finance
-                                        and Operations</option>
-                                    <option value="Microsoft BI">Microsoft BI</option>
-                                    <option value="Human Resources">משאבי אנוש</option>
-
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="mentorEmail" class="form-label">דוא"ל המנטור</label>
-                                <input type="email" class="form-control" id="mentorEmail" name="mentorEmail" placeholder="הזן כתובת דוא&quot;ל של עובד אברא">
-                            </div>
-                            <div class="mb-3">
-                                <label for="startDate" class="form-label">תאריך תחילת עבודה</label>
-                                <input type="date" class="form-control" id="startDate" name="startDate" required>
-                            </div>
-                            <button type="button" class="btn btn-secondary" id="prevStep">הקודם</button>
-                            <button type="submit" class="btn btn-primary">שלח</button>
                         </div>
                     </form>
                     <div id="loading-container" style="display: none;">
@@ -180,7 +183,7 @@
 
         <footer>
 
-            <p>&copy; 2024 <a href="https://roei-redler.github.io/in-rep/" target="_blank">Roei Redler</a></p>
+            <p>&copy; 2024 <a href="https://www.abra-it.com/" target="_blank">Abra Microsoft Solutions</a></p>
             <div class="custom-icons">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Microsoft_Power_Automate.svg/2048px-Microsoft_Power_Automate.svg.png"
                     alt="Icon 1">
@@ -200,6 +203,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="script2.js"></script>
+    <!--
+  Copyright &copy; 2024
+  For more information, visit: https://shorturl.at/AYwfS
+-->
+
 </body>
 
 </html>
