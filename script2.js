@@ -209,7 +209,9 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let [key, value] of formData.entries()) {
             jsonData[key] = value;
         }
-    
+        // Add username from login form
+        const username = document.getElementById('username').value;
+        jsonData.username = username;
         console.log('Sending data:', jsonData);
     
         // Function to update loading steps
